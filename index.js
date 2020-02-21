@@ -69,7 +69,28 @@ function Person(name, age) {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {}
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
+}
+
+Car.prototype.fill = function(gallons) {
+  this.tank += gallons;
+};
+
+Car.prototype.drive = function(distance) {
+  const maxDistance = this.tank * this.milesPerGallon;
+
+  distance <= maxDistance
+    ? (this.odometer += distance)
+    : (this.odometer = maxDistance);
+
+  this.tank -= Math.floor(distance / this.milesPerGallon);
+
+  if (!this.tank) return `I ran out of fueld at ${this.odometer} miles!`;
+};
 
 /*
   TASK 3
@@ -78,16 +99,25 @@ function Car() {}
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {}
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age);
+  this.favoriteToy = favoriteToy;
+}
 
-/* 
+Baby.prototype = Object.create(Person.prototype);
+
+Baby.prototype.play = function() {
+  return `Playing with ${this.favoriteToy}`;
+};
+
+/*
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. Function can be invoked with new keyword
+  2. Function can be called as a method
+  3. Function can be called by call, apply, or bind
+	4. Function can be called in global scope (re: window binding, undefined)
 */
 
 ///////// END OF CHALLENGE /////////
